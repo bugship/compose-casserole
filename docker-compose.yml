@@ -1,0 +1,15 @@
+services:
+  web:
+    image: nginx:1.25-alpine
+    ports: ["8088:80"]
+    volumes: ["./web:/usr/share/nginx/html:ro"]
+    depends_on: [api]
+  api:
+    build: ./api
+    ports: ["5005:5005"]
+    environment:
+      REDIS_HOST: redis
+      PORT: "5005"
+    depends_on: [redis]
+  redis:
+    image: redis:7-alpine
